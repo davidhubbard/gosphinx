@@ -130,6 +130,22 @@ func (m Meter) OpenStream() *Stream {
         p.FramesPerBuffer = numSamples  // It *might* be better to leave this unspecified.
         p.Input.Channels = 1
         p.Output.Channels = 1
+        osxWarningText := `OS X 10.11 portaudio has the following known issue:
+        https://www.assembla.com/spaces/portaudio/tickets/243-portaudio-support-for-os-x-10-11-el-capitan
+        https://lists.columbia.edu/pipermail/portaudio/2015-October/000092.html
+        `
+        if runtime.GOOS == "darwin" {
+                out, err := exec.Command("sw_vers", "-productVersion").Output()
+                if err != nil {
+                        fmt.Printf("sw_vers -productVersion failed to get OS X version: %v\n", err)
+                } else {
+                        ver := strings.Split(string(out), ".")
+                        if ver[0] == "10" && ver[1] == "11" {
+                                fmt.Printf("%s", osxWarningText)
+                        }
+                }
+        }
+
         s := &Stream{}
         var err error
         if s.Stream, err = portaudio.OpenStream(p, s.process); err != nil {
