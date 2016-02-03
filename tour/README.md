@@ -20,8 +20,6 @@ Then try running the basic audio pipeline:
     cd $GOPATH/src/github.com/davidhubbard/gosphinx/tour
     go run 1audiopipeline.go
 
-I will update these instructions as I streamline the process.
-
 # 2. Simple audio processing
 
 Human speech is only encoded in frequencies from about
@@ -39,3 +37,13 @@ if there is energy above 8 kHz.
 
     cd $GOPATH/src/github.com/davidhubbard/gosphinx/tour
     go run 2frequencies.go
+
+The `process()` function does the audio processing.
+
+# 3. Features
+
+One way to use less CPU power is to reduce the amount of audio data that needs to be
+crunched. `2frequencies.go` demos that step.
+
+The next reduction in the data comes by identifying boundaries in the audio data. Human
+speech contains breaks to "take a breath," change the speaker, and so forth.
