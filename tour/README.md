@@ -38,7 +38,8 @@ if there is energy above 8 kHz.
     cd $GOPATH/src/github.com/davidhubbard/gosphinx/tour
     go run 2frequencies.go
 
-The `process()` function does the audio processing.
+The `process()` function does the audio processing. You can see how little data remains
+because it is written to the terminal. Each number represents an individual sample.
 
 # 3. Features
 
@@ -47,3 +48,5 @@ crunched. `2frequencies.go` demos that step.
 
 The next reduction in the data comes by identifying boundaries in the audio data. Human
 speech contains breaks to "take a breath," change the speaker, and so forth.
+
+Again, you can see the output on the terminal. Each number represents a feature.
