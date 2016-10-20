@@ -15,7 +15,8 @@ The install the portaudio library with `apt-get install portaudio-dev`,
 `brew install portaudio`, or for windows, download the source from
 [portaudio.com](portaudio.com).
 
-Then try running the basic audio pipeline:
+Then try running the basic audio pipeline.
+**Mute or plug in a headset. This can make your laptop squeal.**
 
     cd $GOPATH/src/github.com/davidhubbard/gosphinx/tour
     go run 1audiopipeline.go
@@ -48,5 +49,10 @@ crunched. `2frequencies.go` demos that step.
 
 The next reduction in the data comes by identifying boundaries in the audio data. Human
 speech contains breaks to "take a breath," change the speaker, and so forth.
+
+The final reduction is to process the chunks of audio data into features. A feature is
+the basic building block for modern AI algorithms: it represents just slightly more than
+the raw data by extracting some tidbit of useful information. Advanced AI techniques
+train a neural network to build its own feature extractors.
 
 Again, you can see the output on the terminal. Each number represents a feature.

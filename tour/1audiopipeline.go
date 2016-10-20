@@ -9,6 +9,9 @@ import (
         "github.com/gordonklaus/portaudio"
         "flag"
         "fmt"
+        "os/exec"
+        "runtime"
+        "strings"
 )
 
 type MeterFastDev struct {
@@ -53,9 +56,9 @@ func (m *Meter) Initialize() {
                 }
                 minLatency := make(map[string]float64)
                 for i, d := range hai.Devices {
-                        appendLowLatency := func(k string, latency float64) {
+                        appendLowLatency := func(k string, numch int, latency float64) {
                                 // some devices do not support low latency, indicated by a latency of -1
-                                if latency > 0 {
+                                if numch > 0 && latency > 0 {
                                         all[k] = append(all[k], &MeterFastDev{"", i, d, latency})
                                         cur, ok := minLatency[k]
                                         if !ok || cur > latency {
@@ -63,8 +66,8 @@ func (m *Meter) Initialize() {
                                         }
                                 }
                         }
-                        appendLowLatency("i", d.DefaultLowInputLatency.Seconds())
-                        appendLowLatency("o", d.DefaultLowOutputLatency.Seconds())
+                        appendLowLatency("i", d.MaxInputChannels, d.DefaultLowInputLatency.Seconds())
+                        appendLowLatency("o", d.MaxOutputChannels, d.DefaultLowOutputLatency.Seconds())
                 }
                 for k, s := range all {
                         for _, d := range s {
@@ -130,7 +133,7 @@ func (m Meter) OpenStream() *Stream {
         p.FramesPerBuffer = numSamples  // It *might* be better to leave this unspecified.
         p.Input.Channels = 1
         p.Output.Channels = 1
-        osxWarningText := `OS X 10.11 portaudio has the following known issue:
+        osxWarningText := `OS X 10.11 portaudio known issue (you can safely ignore the following WARNING):
         https://www.assembla.com/spaces/portaudio/tickets/243-portaudio-support-for-os-x-10-11-el-capitan
         https://lists.columbia.edu/pipermail/portaudio/2015-October/000092.html
         `
